@@ -8,4 +8,9 @@
 
 class CrawlerPipeline(object):
     def process_item(self, item, spider):
+        item['push'] = int(item['push'])
+        item['title'] = str(item['title'])
+        item['href'] = str(item['href'])
+        item['date'] = str(item['date'])
+        item['author'] = str(item['author'])
         return item
