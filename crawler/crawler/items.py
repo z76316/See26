@@ -8,11 +8,21 @@
 import scrapy
 
 
-class CrawlerItem(scrapy.Item):
+class ArticleItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    articleId = scrapy.Field()
     title = scrapy.Field()
     author = scrapy.Field()
     push = scrapy.Field()
     href = scrapy.Field()
     date = scrapy.Field()
+
+class PushItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    push = scrapy.Field()
+    user = scrapy.Field()
+    content = scrapy.Field()
+    datetime = scrapy.Field()
+    articleId = scrapy.Field()
