@@ -17,6 +17,8 @@ NEWSPIDER_MODULE = 'crawler.spiders'
 # For utf-8
 FEED_EXPORT_ENCODING = 'utf-8'
 
+LOG_STDOUT = False
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'crawler (+http://www.yourdomain.com)'
 
