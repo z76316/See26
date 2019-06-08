@@ -11,7 +11,7 @@ import scrapy
 class ArticleItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    articleId = scrapy.Field()
+    id = scrapy.Field()
     title = scrapy.Field()
     author = scrapy.Field()
     push = scrapy.Field()
@@ -25,4 +25,4 @@ class PushItem(scrapy.Item):
     user = scrapy.Field()
     content = scrapy.Field()
     datetime = scrapy.Field()
-    articleId = scrapy.Field()
+    article_id = scrapy.Field()
