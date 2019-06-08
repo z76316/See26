@@ -33,11 +33,11 @@ class NbaSpider(scrapy.Spider):
                 article_url = q.css('div.title > a::attr(href)').get()
                 article_id = article_url[article_url.find('M.')+2 : article_url.find('A.')-1]
 
-                article['articleId'] = article_id
+                article['id'] = article_id
                 article['push'] = q.css('div.nrec > span.hl ::text').get()
                 article['title'] = q.css('div.title > a::text').get()
                 article['href'] = 'www.ptt.cc' + str(q.css('div.title > a::attr(href)').get())
-                article['date'] = q.css('div.meta > div.date ::text').get()
+                article['date'] = q.css('div.meta > div.date ::text').get().strip()
                 article['author'] = q.css('div.meta > div.author ::text').get()
 
                 yield(article)
@@ -67,15 +67,15 @@ class NbaSpider(scrapy.Spider):
                 #     'user':q.css('div.push > span.push-userid ::text').get(),
                 #     'content':q.css('div.push > span.push-content ::text').get(),
                 #     'datetime':q.css('div.push > span.push-ipdatetime ::text').get(),
-                #     'articleId':article_id
+                #     'article_id':article_id
                 # }
 
-                push['push'] = q.css('div.push > span.push-tag ::text').get()
-                push['user'] = q.css('div.push > span.push-userid ::text').get()
-                push['content'] = q.css('div.push > span.push-content ::text').get()
-                push['datetime'] = q.css('div.push > span.push-ipdatetime ::text').get()
-                push['articleId'] = article_id
+                push['push'] = q.css('div.push > span.push-tag ::text').get().strip()
+                push['user'] = q.css('div.push > span.push-userid ::text').get().strip()
+                push['content'] = q.css('div.push > span.push-content ::text').get().strip(': ')
+                push['datetime'] = q.css('div.push > span.push-ipdatetime ::text').get().strip()
+                push['article_id'] = article_id
 
                 yield(push)
 
-            raise CloseSpider('Close it')
+            # raise CloseSpider('Close it')
