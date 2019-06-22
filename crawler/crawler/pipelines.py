@@ -11,7 +11,8 @@ from datetime import date, datetime
 
 class CrawlerPipeline(object):
     def __init__(self):
-        self.engine = create_engine('sqlite:///ptt_nba.db', echo = False)
+        # self.engine = create_engine('sqlite:///ptt_nba.db', echo = False)
+        self.engine = create_engine('sqlite:///ptt_gossiping.db', echo = False)
         self.meta = MetaData()
         self.conn = self.engine.connect()
         self.articles = Table(
@@ -21,6 +22,8 @@ class CrawlerPipeline(object):
             Column('title', String),
             Column('href', String),
             Column('author', String),
+            Column('board', String),
+            Column('ip', String),
             Column('date', Date)
         )
         self.pushs = Table(
@@ -30,6 +33,7 @@ class CrawlerPipeline(object):
             Column('push', String),
             Column('user', String),
             Column('content', String),
+            Column('ip', String),
             Column('datetime', DateTime)
         )
 
@@ -47,6 +51,7 @@ class CrawlerPipeline(object):
         article['title'] = str(article['title'])
         article['href'] = str(article['href'])
         article['author'] = str(article['author'])
+        article['board'] = str(article['board'])
         date1 = article['date'].split('/')
         month = int(date1[0])
         day = int(date1[1])
@@ -63,25 +68,19 @@ class CrawlerPipeline(object):
         push['user'] = str(push['user'])
         push['content'] = str(push['content'])
         push['article_id'] = int(push['article_id'])
+
         date1 = push['datetime'].split('/')
-        month = int(date1[0])
-        date2 = date1[1].split(' ')
+        year = int(date1[0])
+        month = int(date1[1])
+        date2 = date1[2].split(' ')
         day = int(date2[0])
         date3 = date2[1].split(':')
         hour = int(date3[0])
         minute = int(date3[1])
-        push['datetime'] = datetime(2019, month, day, hour, minute)
+        push['datetime'] = datetime(year, month, day, hour, minute)
 
         ins = self.pushs.insert().values(push)
         result = self.conn.execute(ins)
 
         return push
 
-        # if 'title' in item.keys():
-        #     item['push'] = int(item['push'])
-        #     item['title'] = str(item['title'])
-        #     item['href'] = str(item['href'])
-        #     item['date'] = str(item['date'])
-        #     item['author'] = str(item['author'])
-        
-        # return item
