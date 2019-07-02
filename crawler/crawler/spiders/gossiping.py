@@ -11,7 +11,7 @@ class GossipingSpider(scrapy.Spider):
     # start_urls = ['https://www.ptt.cc/bbs/Gossiping/index.html']
 
     # [臉書]
-    start_urls = ['https://www.ptt.cc/bbs/Gossiping/search?q=%5B%E8%87%89%E6%9B%B8%5D']
+    start_urls = ['https://www.ptt.cc/bbs/Gossiping/search?q=%E8%87%89%E6%9B%B8']
 
     def parse(self, response):
         yield scrapy.Request(self.start_urls[0], cookies={'over18': '1'}, callback = self.after_over18, dont_filter = True)
@@ -49,7 +49,7 @@ class GossipingSpider(scrapy.Spider):
 
             next_page_url = response.css('div.action-bar > div.btn-group > a.btn::attr(href)')[3].get()
 
-            if next_page_url and self.count_page < 3:
+            if next_page_url and self.count_page < 597:
                 self.count_page += 1
                 next_page = response.urljoin(next_page_url)
                 yield scrapy.Request(next_page, callback = self.after_over18, dont_filter = True)
@@ -71,7 +71,11 @@ class GossipingSpider(scrapy.Spider):
                 push['user'] = q.css('div.push > span.push-userid ::text').get().strip()
                 push['content'] = q.css('div.push > span.push-content ::text').get().strip(': ')
                 ip_datetime = q.css('div.push > span.push-ipdatetime ::text').get().strip().split(' ')
-                push['ip'] = ip_datetime[0]
-                push['datetime'] = year + '/' + ip_datetime[1] + ' ' + ip_datetime[2]
+                if len(ip_datetime) == 3:
+                    push['ip'] = ip_datetime[0]
+                    push['datetime'] = year + '/' + ip_datetime[1] + ' ' + ip_datetime[2]
+                else:
+                    push['ip'] = ''
+                    push['datetime'] = year + '/' + ip_datetime[0] + ' ' + ip_datetime[1]
 
                 yield(push)
