@@ -131,7 +131,8 @@ session=get_session(engine)
 
 
 
-current=1
+current=38928
+temp=[]
 while True:
     get_page(browser,page='https://www.ptt.cc/bbs/Gossiping/index%s.html'%(current))
     pageSource = browser.page_source  
@@ -149,9 +150,18 @@ while True:
     print('current',current)
     print('new_urls_after_remove',len(new_urls_after_remove))
     
-    add_to_table(new_urls_after_remove)
+    if len(new_urls_after_remove)!=0:
+        new_urls_after_remove=[(x.url_link,x) for x in new_urls_after_remove]
+        temp+=new_urls_after_remove
         
-    current+=1
+    else:
+        print('new urls=',len(temp))
+        temp.sort()
+        temp=[x[1] for x in temp]
+        add_to_table(temp)
+        break
+        
+    current-=1
     
 
 
